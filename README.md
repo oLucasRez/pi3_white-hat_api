@@ -9,9 +9,6 @@ The docker option is prefereed.
 ### Linux:
 
 ```sh
-  # Install the virtual environment package
-  python3 -m pip install venv
-
   # Creates a virtual environment
   make env
 
@@ -28,14 +25,11 @@ The docker option is prefereed.
 ### Windows:
 
 ```ps1
-  # Install the virtual environment package
-  py -m pip install venv
-
   # Creates a virtual environment
   py -m venv env
 
   # Activates the virtual environment
-  .\venv\Scripts\activate
+  .\env\Scripts\activate
 
   # Install project requirements
   pip install -r requirements.txt
