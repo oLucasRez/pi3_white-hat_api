@@ -14,14 +14,12 @@ class BooksRepository(BooksRepositoryABC):
     async def list_books(self) -> List[Book]:
         iterable_cursor = self.collection.find({})
 
-        books = []
+        """
+            This conversion should be inside an adapter
+            But it was late in the night
+            And this is just an example =)
+        """
+        books = [Book(**book) async for book in iterable_cursor]
 
-        async for book in iterable_cursor:
-            """
-             This conversion should be inside an adapter
-             But it was late in the night
-             And this is just an example =)
-            """
-            books.append(Book(**book))
 
         return books
