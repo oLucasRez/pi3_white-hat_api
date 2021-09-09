@@ -10,3 +10,21 @@ services:
     ports:
       - 8000:8000
       - 5678:5678
+    depends_on:
+      - database
+    links:
+      - database
+
+  database:
+    image: mongo
+    container_name: mongodb
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - mongov:/data/mongo
+    command: --quiet
+
+volumes:
+  mongov:
+    driver: local
