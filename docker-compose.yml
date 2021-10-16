@@ -1,12 +1,19 @@
-version: "3.9"
-
+version: "3.9" # optional since v1.27.0
 services:
-  api:
-    build: .
-    container_name: api
-    restart: always
-    volumes:
-      - .:/usr/app
+  db:
+    image: "mongo"
+    container_name: "white-hat_db"
     ports:
-      - 8000:8000
-      - 5678:5678
+      - "27017:27017"
+    restart: "always"
+    command: "mongod --quiet --logpath /dev/null"
+
+  api:
+    container_name: "white-hat_api"
+    build: .
+    ports:
+      - "1323:1323"
+    depends_on:
+      - "db"
+    links:
+      - "db"

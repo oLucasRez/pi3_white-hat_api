@@ -1,11 +1,14 @@
-FROM python:3.9.6-slim-buster
+# syntax=docker/dockerfile:1
 
-WORKDIR /usr/app
+FROM golang:1.16-alpine
 
-COPY requirements.txt .
+WORKDIR /src
 
-RUN pip3 install -r requirements.txt
+COPY go.mod ./
+COPY go.sum ./
+
+RUN go mod download
 
 COPY . .
 
-CMD ["uvicorn", "app.server:server", "--reload", "--host", "0.0.0.0"]
+CMD [ "go", "run", "src/main.go" ]
