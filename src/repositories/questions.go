@@ -1,21 +1,10 @@
 package repositories
 
 import (
-	"context"
-	"log"
-
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"white-hat.api/src/entities"
 )
-
-var ctx = context.TODO()
-
-func fatal(err error) {
-	if err != nil {
-		log.Fatal(err)
-	}
-}
 
 type Questions struct {
 	database *mongo.Database

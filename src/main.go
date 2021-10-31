@@ -25,10 +25,14 @@ func main() {
 
 	server := server.New()
 
-	questions_repo := repositories.NewQuestions(database)
+	users_repo := repositories.NewUsers(database)
+	rests.RegisterUsersRoutes(server, users_repo)
 
-	rests.RegisterAnswersRoutes(server)
+	questions_repo := repositories.NewQuestions(database)
 	rests.RegisterQuestionsRoutes(server, questions_repo)
+
+	answers_repo := repositories.NewAnswers(database)
+	rests.RegisterAnswersRoutes(server, answers_repo, questions_repo)
 
 	server.Run()
 }
