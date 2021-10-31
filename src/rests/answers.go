@@ -30,13 +30,13 @@ func (this *answers_deps) postAnswers(web echo.Context) error {
 }
 
 func (this *answers_deps) getResults(web echo.Context) error {
-	// user_key := web.Param("key")
+	user_key := web.Param("key")
 
-	answerss := this.answers_repo.GetAll()
+	answerss := this.answers_repo.GetByUserKey(user_key)
 
 	results := []entities.Result{}
-	for i, answers := range answerss {
-		results[i] = this.calculateResult(answers)
+	for _, answers := range answerss {
+		results = append(results, this.calculateResult(answers))
 	}
 
 	return web.JSON(200, results)
@@ -64,4 +64,5 @@ func RegisterAnswersRoutes(server *server.Server, answers_repo *repositories.Ans
 	this := &answers_deps{server, answers_repo, questions_repo}
 
 	server.Post("/answers/:key", this.postAnswers)
+	server.Get("/answers/:key", this.getResults)
 }
