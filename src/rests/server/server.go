@@ -1,15 +1,20 @@
 package server
 
-import "github.com/labstack/echo/v4"
+import (
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
+)
 
 type Server struct {
 	echo *echo.Echo
 }
 
 func New() *Server {
-	echo := echo.New()
+	e := echo.New()
 
-	return &Server{echo}
+	e.Use(middleware.CORS())
+
+	return &Server{e}
 }
 
 func (server *Server) Run() {
