@@ -16,6 +16,9 @@ import (
 
 // docker-compose up --build
 
+// docker tag white-hat-api registry.digitalocean.com/white-hat-api/white-hat-api:0.0.2
+// docker push registry.digitalocean.com/white-hat-api/white-hat-api:0.0.2
+
 var ctx = context.TODO()
 
 func main() {

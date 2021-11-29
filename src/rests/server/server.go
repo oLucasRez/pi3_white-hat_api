@@ -1,6 +1,8 @@
 package server
 
 import (
+	"os"
+
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -13,12 +15,22 @@ func New() *Server {
 	e := echo.New()
 
 	e.Use(middleware.CORS())
+	e.Use(middleware.Recover())
 
 	return &Server{e}
 }
 
 func (server *Server) Run() {
-	server.echo.Logger.Fatal(server.echo.Start(":1323"))
+	port_string := ":"
+	port := os.Getenv("PORT")
+
+	if port != "" {
+		port_string += port
+	} else {
+		port_string += "1323"
+	}
+
+	server.echo.Logger.Fatal(server.echo.Start(port_string))
 }
 
 func (server *Server) Get(path string, handler echo.HandlerFunc) {
