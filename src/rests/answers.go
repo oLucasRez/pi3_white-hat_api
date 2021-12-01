@@ -47,32 +47,32 @@ func (bla *answers_deps) calculateResult(answers []entities.Answer) entities.Res
 	questions := bla.questions_repo.GetAll()
 
 	result := entities.Result{}
-	riccardo_gay := map[string]int{}
-	riccardo_mto_gay := map[string]int{}
+	normalizador_focus := map[string]int{}
+	normalizador_category := map[string]int{}
 	for _, answer := range answers {
 		focus := questions[answer.Id-1].Focus
 		category := questions[answer.Id-1].Category
 
 		if result[focus].Result == nil {
-			result[focus] = entities.Slaoq{Result: map[string]float32{}}
+			result[focus] = entities.Focuses{Result: map[string]float32{}}
 		}
 
 		result[focus].Result[category] += float32(answer.Rate)
-		result[focus] = entities.Slaoq{
+		result[focus] = entities.Focuses{
 			Result: result[focus].Result,
 			Nota:   result[focus].Nota + float32(answer.Rate),
 		}
 
-		riccardo_gay[focus]++
-		riccardo_mto_gay[category]++
+		normalizador_focus[focus]++
+		normalizador_category[category]++
 	}
 
-	for focus, msso_vale_nd_vale_td := range result {
-		for category, _ := range msso_vale_nd_vale_td.Result {
-			result[focus].Result[category] /= float32(riccardo_mto_gay[category])
+	for focus, focuses := range result {
+		for category, _ := range focuses.Result {
+			result[focus].Result[category] /= float32(normalizador_category[category])
 		}
 
-		Nota := result[focus].Nota / float32(riccardo_gay[focus])
+		Nota := result[focus].Nota / float32(normalizador_focus[focus])
 
 		var Comment string
 		if Nota >= 3 {
@@ -81,10 +81,10 @@ func (bla *answers_deps) calculateResult(answers []entities.Answer) entities.Res
 			Comment = enums.Comments[focus].Bad
 		}
 
-		result[focus] = entities.Slaoq{
+		result[focus] = entities.Focuses{
 			Comment: Comment,
 			Nota:    Nota,
-			Result:  msso_vale_nd_vale_td.Result,
+			Result:  focuses.Result,
 		}
 	}
 
